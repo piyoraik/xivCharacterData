@@ -1,16 +1,21 @@
-import { Stack, StackProps } from 'aws-cdk-lib';
-import { Construct } from 'constructs';
-// import * as sqs from 'aws-cdk-lib/aws-sqs';
+import {
+  Stack,
+  StackProps,
+  aws_lambda_nodejs as lambda,
+  Duration,
+} from "aws-cdk-lib";
+import { Runtime } from "aws-cdk-lib/aws-lambda";
+import { Construct } from "constructs";
 
 export class XivStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
-    // The code that defines your stack goes here
-
-    // example resource
-    // const queue = new sqs.Queue(this, 'XivQueue', {
-    //   visibilityTimeout: cdk.Duration.seconds(300)
-    // });
+    new lambda.NodejsFunction(this, "xivCharacterData", {
+      entry: "lambda/index.ts",
+      handler: "handler",
+      runtime: Runtime.NODEJS_14_X,
+      // timeout: Duration.minutes(20),
+    });
   }
 }
