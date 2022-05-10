@@ -19,8 +19,8 @@ export const handler: Handler = async () => {
     const params = {
       TableName: TABLE_NAME,
       Item: {
-        name: character.Name,
         date: `${today.getMonth()}/${today.getDate()}`,
+        name: character.Name,
         ...characterLevel,
       },
     };
