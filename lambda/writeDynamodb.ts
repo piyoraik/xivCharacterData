@@ -10,29 +10,26 @@ const BASE_URL = "https://xivapi.com/character";
 export const handler: Handler = async () => {
   const today = new Date();
 
-  const xivCharacter = {
-    piyo: "30139186",
-    rinta: "42940731",
-    nonsugar: "42908956",
-    misa: "42898572",
-  };
+  const xivCharacters = ["30139186", "42940731", "42908956", "42898572"];
 
-  const piyo = await fetchCharacterData(xivCharacter.piyo, BASE_URL);
-  const piyoJobLevel = characterJobLevel(piyo.ClassJobs);
+  for (const xivCharacter of xivCharacters) {
+    const character = await fetchCharacterData(xivCharacter, BASE_URL);
+    const characterLevel = characterJobLevel(character.ClassJobs);
 
-  const params = {
-    TableName: TABLE_NAME,
-    Item: {
-      name: piyo.Name,
-      date: `${today.getMonth()}/${today.getDate()}`,
-      ...piyoJobLevel,
-    },
-  };
+    const params = {
+      TableName: TABLE_NAME,
+      Item: {
+        name: character.Name,
+        date: `${today.getMonth()}/${today.getDate()}`,
+        ...characterLevel,
+      },
+    };
 
-  try {
-    const response = await db.put(params).promise();
-    console.log(response);
-  } catch (dbError) {
-    console.log(dbError);
+    try {
+      const response = await db.put(params).promise();
+      console.log(response);
+    } catch (dbError) {
+      console.log(dbError);
+    }
   }
 };

@@ -3,6 +3,7 @@ import {
   StackProps,
   aws_lambda_nodejs as lambda,
   aws_dynamodb as dynamodb,
+  Duration,
 } from "aws-cdk-lib";
 import { Runtime } from "aws-cdk-lib/aws-lambda";
 import { Construct } from "constructs";
@@ -22,6 +23,7 @@ export class XivStack extends Stack {
         entry: "lambda/writeDynamodb.ts",
         handler: "handler",
         runtime: Runtime.NODEJS_14_X,
+        timeout: Duration.seconds(60),
         environment: {
           TABLE_NAME: dynamoTable.tableName,
         },
@@ -35,6 +37,7 @@ export class XivStack extends Stack {
         entry: "lambda/readDynamodb.ts",
         handler: "handler",
         runtime: Runtime.NODEJS_14_X,
+        timeout: Duration.seconds(60),
         environment: {
           TABLE_NAME: dynamoTable.tableName,
         },
@@ -42,6 +45,6 @@ export class XivStack extends Stack {
     );
 
     dynamoTable.grantReadWriteData(writeLambdaFunction);
-    dynamoTable.grantReadData(readLambdaFunction)
+    dynamoTable.grantReadData(readLambdaFunction);
   }
 }
