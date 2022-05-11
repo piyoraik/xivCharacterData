@@ -32,7 +32,7 @@ def makeGraph():
 
 def postDiscord():
   # Create the webhook. 
-  discord = Discord(url="")
+  discord = Discord(url="https://discord.com/api/webhooks/")
   discord.post(
     file={
       "file1": open(filePath, "rb")

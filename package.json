@@ -14,7 +14,7 @@
     "@types/aws-lambda": "^8.10.97",
     "@types/jest": "^26.0.10",
     "@types/node": "10.17.27",
-    "aws-cdk": "2.12.0",
+    "aws-cdk": "2.23.0",
     "esbuild": "^0.14.38",
     "jest": "^26.4.2",
     "ts-jest": "^26.2.0",
@@ -22,7 +22,8 @@
     "typescript": "~3.9.7"
   },
   "dependencies": {
-    "aws-cdk-lib": "2.12.0",
+    "@aws-cdk/aws-lambda-python-alpha": "^2.23.0-alpha.0",
+    "aws-cdk-lib": "2.23.0",
     "aws-sdk": "^2.1131.0",
     "axios": "^0.27.2",
     "constructs": "^10.0.0",

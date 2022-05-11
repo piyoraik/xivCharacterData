@@ -9,6 +9,7 @@ import { Rule, Schedule } from "aws-cdk-lib/aws-events";
 import { LambdaFunction } from "aws-cdk-lib/aws-events-targets";
 import { Runtime } from "aws-cdk-lib/aws-lambda";
 import { LambdaDestination } from "aws-cdk-lib/aws-lambda-destinations";
+import { PythonFunction } from "@aws-cdk/aws-lambda-python-alpha";
 import { Construct } from "constructs";
 
 export class XivStack extends Stack {
@@ -30,6 +31,7 @@ export class XivStack extends Stack {
         timeout: Duration.seconds(60),
         environment: {
           TABLE_NAME: dynamoTable.tableName,
+          AZ: "Asia/Tokyo",
         },
       }
     );
@@ -44,13 +46,28 @@ export class XivStack extends Stack {
         timeout: Duration.seconds(60),
         environment: {
           TABLE_NAME: dynamoTable.tableName,
+          AZ: "Asia/Tokyo",
         },
         onSuccess: new LambdaDestination(readLambdaFunction, {}),
       }
     );
 
+    const samplePythonLambdaFunction = new PythonFunction(
+      this,
+      "samplePythonFunction",
+      {
+        runtime: Runtime.PYTHON_3_9,
+        handler: "handler",
+        entry: "python",
+        environment: {
+          AZ: "Asia/Tokyo",
+        },
+      }
+    );
+
     dynamoTable.grantReadWriteData(writeLambdaFunction);
     dynamoTable.grantReadData(readLambdaFunction);
+    dynamoTable.grantReadData(samplePythonLambdaFunction);
 
     const fetchLambdaRule = new Rule(this, "fetchLambdaRule", {
       ruleName: "fetchLambdaRule",
